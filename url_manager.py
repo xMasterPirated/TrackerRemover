@@ -1,11 +1,17 @@
+import sys
 import re
 import requests
+from pathlib import Path
 from urllib.parse import urlparse, parse_qsl, urlencode, urlunparse
+
+if getattr(sys, "frozen", False): BASE_DIR = Path(sys.executable).parent
+else: BASE_DIR = Path(__file__).parent
+trackers_file = BASE_DIR / "trackers"
 
 pattern = r'https?://[^\s<>"\'\])]+|www\.[^\s<>"\'\])]+'
 url_pattern = re.compile(pattern)
 
-with open("trackers", "r") as f: tl = f.readlines()
+with open(trackers_file, "r") as f: tl = f.readlines()
 trackers_list = [tracker.strip().replace("\n", "") for tracker in tl]
 
 def find_urls(text):
