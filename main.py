@@ -6,7 +6,7 @@ from Clipboard import keep_alive
 def salir(icon, item):
     icon.stop()
 
-imagen = Image.open(r"C:\Users\Admin\Desktop\ChukTools\urltracker\icon.ico")
+imagen = Image.open("icon.ico")
 menu = pystray.Menu(pystray.MenuItem("Salir", salir))
 
 icon = pystray.Icon("TrackerRemover", imagen, "Removing trackers from clipboard", menu)
