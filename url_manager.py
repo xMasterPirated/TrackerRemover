@@ -4,15 +4,16 @@ import requests
 from pathlib import Path
 from urllib.parse import urlparse, parse_qsl, urlencode, urlunparse
 
-if getattr(sys, "frozen", False): BASE_DIR = Path(sys.executable).parent
-else: BASE_DIR = Path(__file__).parent
-trackers_file = BASE_DIR / "trackers"
+def resource_path(filename):
+    if getattr(sys, "frozen", False): return Path(sys._MEIPASS) / filename
+    return Path(__file__).resolve().parent / filename
+
+TRACKERS_PATH = resource_path("trackers")
+with open(TRACKERS_PATH, "r", encoding="utf-8") as f:
+    trackers_list = [line.strip() for line in f if line.strip()]
 
 pattern = r'https?://[^\s<>"\'\])]+|www\.[^\s<>"\'\])]+'
 url_pattern = re.compile(pattern)
-
-with open(trackers_file, "r") as f: tl = f.readlines()
-trackers_list = [tracker.strip().replace("\n", "") for tracker in tl]
 
 def find_urls(text):
     return url_pattern.findall(text)
